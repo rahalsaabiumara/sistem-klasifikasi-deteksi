@@ -1,0 +1,20 @@
+# Environment & secrets (JANGAN pernah di-commit!)
+.env
+.streamlit/secrets.toml
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# File video sementara (bisa besar)
+temp_video.mp4
+sampel video/
+
+# IDE
+.vscode/
