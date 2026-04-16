@@ -1,4 +1,4 @@
-# Environment & secrets (JANGAN pernah di-commit!)
+# Environment & secrets
 .env
 .streamlit/secrets.toml
 
