@@ -12,8 +12,7 @@ __pycache__/
 venv/
 env/
 
-# File video sementara (bisa besar)
-temp_video.mp4
+# File video
 sampel video/
 
 # IDE
