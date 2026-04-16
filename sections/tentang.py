@@ -311,7 +311,7 @@ def render(anim, close_anim, anchor):
       EduDetect merupakan sistem berbasis website yang memanfaatkan model algoritma <span class="highlight-blue">YOLOv11</span> untuk melakukan
       deteksi dan klasifikasi aktivitas siswa secara otomatis dari video rekaman CCTV selama proses
       pembelajaran di kelas. Pengguna cukup mengunggah video rekaman, kemudian sistem akan menganalisis
-      setiap frame untuk mengidentifikasi perilaku siswa — mengklasifikasikannya ke dalam kategori
+      setiap frame untuk mengidentifikasi perilaku siswa, yang kemudian sistem akan mengklasifikasikannya ke dalam kategori
       <span class="highlight-green">memperhatikan</span> dan <span class="highlight-red">tidak memperhatikan</span>,
       serta menghitung persentase tingkat perhatian siswa secara keseluruhan.
       <br><br>
@@ -331,12 +331,12 @@ def render(anim, close_anim, anchor):
     <div class="feat-card purple">
       <div class="feat-icon">🔍</div>
       <div class="feat-title">Deteksi Objek</div>
-      <div class="feat-desc">YOLOv11 mendeteksi setiap siswa di setiap frame</div>
+      <div class="feat-desc">Menggunakan algoitma YOLOv11 sebagai model deteksi dan klasifikasi siswa</div>
     </div>
     <div class="feat-card green">
       <div class="feat-icon">📊</div>
       <div class="feat-title">Visualisasi Hasil</div>
-      <div class="feat-desc">Bounding box berwarna untuk setiap klasifikasi</div>
+      <div class="feat-desc">Mengklasifikasikan aktivitas siswa yang memperhatikan dan tidak memperhatikan</div>
     </div>
     <div class="feat-card orange">
       <div class="feat-icon">🤖</div>
