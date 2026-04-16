@@ -43,11 +43,369 @@ def _make_donut_chart(percent: int) -> go.Figure:
     return fig
 
 
+def _processing_header():
+    """Tampilkan header animasi 'Memproses Analisis Video...' saat video sedang berjalan."""
+    st.components.v1.html("""
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .proc-header {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 24px;
+    background: linear-gradient(135deg,
+      rgba(245,158,11,0.08) 0%,
+      rgba(239,68,68,0.06) 50%,
+      rgba(59,130,246,0.06) 100%);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 18px;
+    margin-bottom: 6px;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  /* Spinning loader */
+  .loader-ring {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 4px solid rgba(245,158,11,0.15);
+    border-top: 4px solid #f59e0b;
+    border-right: 4px solid #ef4444;
+    animation: spin 1s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .proc-text-block { flex: 1; }
+
+  .proc-title {
+    font-size: 18px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #f59e0b, #ef4444, #3b82f6);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 2.5s linear infinite;
+    margin-bottom: 6px;
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  /* Animated dots */
+  .proc-dots span {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    margin-right: 5px;
+    animation: dotBounce 1.2s ease infinite;
+  }
+
+  .proc-dots span:nth-child(1) { background:#f59e0b; animation-delay: 0s; }
+  .proc-dots span:nth-child(2) { background:#ef4444; animation-delay: 0.2s; }
+  .proc-dots span:nth-child(3) { background:#3b82f6; animation-delay: 0.4s; }
+
+  @keyframes dotBounce {
+    0%,80%,100% { transform: scale(1);   opacity: 0.6; }
+    40%         { transform: scale(1.5); opacity: 1; }
+  }
+
+  /* Progress bar */
+  .proc-bar-wrap {
+    height: 4px;
+    background: rgba(245,158,11,0.12);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  .proc-bar {
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(90deg, #f59e0b, #ef4444, #3b82f6);
+    border-radius: 999px;
+    animation: barSlide 1.8s ease-in-out infinite;
+  }
+
+  @keyframes barSlide {
+    0%   { width: 10%; margin-left: 0%; }
+    50%  { width: 50%; margin-left: 30%; }
+    100% { width: 10%; margin-left: 90%; }
+  }
+
+  /* Status tags */
+  .proc-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .proc-tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.5px;
+    animation: fadeUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .tag-yolo  { background: rgba(245,158,11,0.12); color:#d97706; border:1px solid rgba(245,158,11,0.25); animation-delay:0.2s; }
+  .tag-frame { background: rgba(59,130,246,0.10);  color:#2563eb; border:1px solid rgba(59,130,246,0.20); animation-delay:0.4s; }
+  .tag-live  { background: rgba(16,185,129,0.10);  color:#059669; border:1px solid rgba(16,185,129,0.20); animation-delay:0.6s; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(10px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+</style>
+
+<div class="proc-header">
+  <div class="loader-ring"></div>
+  <div class="proc-text-block">
+    <div class="proc-title">Memproses Analisis Video Rekaman CCTV...</div>
+    <div class="proc-dots">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="proc-bar-wrap"><div class="proc-bar"></div></div>
+    <div class="proc-tags">
+      <span class="proc-tag tag-yolo">⚡ YOLOv11 Active</span>
+      <span class="proc-tag tag-frame">🎞️ Frame-by-Frame</span>
+      <span class="proc-tag tag-live">🔴 Live Analysis</span>
+    </div>
+  </div>
+</div>
+""", height=145)
+
+
+def _finished_header(placeholder):
+    """Ganti header 'Memproses...' menjadi 'Berhasil Dianalisis' setelah video selesai."""
+    with placeholder:
+        st.components.v1.html("""
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .finished-header {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 24px;
+    background: linear-gradient(135deg,
+      rgba(16,185,129,0.08) 0%,
+      rgba(59,130,246,0.06) 100%);
+    border: 1px solid rgba(16,185,129,0.25);
+    border-radius: 18px;
+    margin-bottom: 6px;
+  }
+
+  .finished-icon {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, #10b981, #3b82f6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(16,185,129,0.28);
+  }
+
+  .finished-text-block { flex: 1; }
+
+  .finished-title {
+    font-size: 18px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #10b981 0%, #3b82f6 60%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
+  }
+
+  .finished-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .finished-tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-done   { background: rgba(16,185,129,0.12); color:#059669; border:1px solid rgba(16,185,129,0.25); }
+  .tag-frames { background: rgba(59,130,246,0.10);  color:#2563eb; border:1px solid rgba(59,130,246,0.20); }
+  .tag-ai     { background: rgba(139,92,246,0.10);  color:#7c3aed; border:1px solid rgba(139,92,246,0.20); }
+</style>
+
+<div class="finished-header">
+  <div class="finished-icon">✅</div>
+  <div class="finished-text-block">
+    <div class="finished-title">Video Rekaman CCTV Berhasil Dianalisis</div>
+    <div class="finished-tags">
+      <span class="finished-tag tag-done">✔ Deteksi Selesai</span>
+      <span class="finished-tag tag-frames">🎞️ Frame-by-Frame</span>
+      <span class="finished-tag tag-ai">🤖 YOLOv11</span>
+    </div>
+  </div>
+</div>
+""", height=120)
+
+
+def _done_header():
+    """Tampilkan header 'Hasil Analisis Rekaman CCTV' setelah video selesai."""
+    st.components.v1.html("""
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --done-bg: linear-gradient(135deg, rgba(16,185,129,0.07) 0%, rgba(59,130,246,0.06) 100%);
+    --done-border: rgba(16,185,129,0.25);
+    --done-sub: #4b5563;
+  }
+  .dark-mode-done {
+    --done-bg: linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(59,130,246,0.10) 100%);
+    --done-border: rgba(16,185,129,0.35);
+    --done-sub: #94a3b8;
+  }
+
+  .done-header {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 24px;
+    background: var(--done-bg);
+    border: 1px solid var(--done-border);
+    border-radius: 18px;
+    margin-bottom: 6px;
+    animation: fadeUp 0.6s cubic-bezier(.4,0,.2,1) forwards;
+  }
+
+  .done-icon-wrap {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, #10b981, #3b82f6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(16,185,129,0.30);
+    animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1) 0.2s forwards;
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  @keyframes popIn {
+    to { opacity:1; transform:scale(1); }
+  }
+
+  .done-text { flex: 1; }
+
+  .done-title {
+    font-size: 18px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #10b981 0%, #3b82f6 60%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 5px;
+  }
+
+  .done-sub {
+    font-size: 13px;
+    color: var(--done-sub);
+    font-weight: 500;
+  }
+
+  /* Status badges */
+  .done-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .done-badge {
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 999px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .db-green  { background:rgba(16,185,129,0.12); color:#059669; border:1px solid rgba(16,185,129,0.25); animation-delay:0.3s; }
+  .db-blue   { background:rgba(59,130,246,0.10); color:#2563eb; border:1px solid rgba(59,130,246,0.20); animation-delay:0.45s; }
+  .db-purple { background:rgba(139,92,246,0.10); color:#7c3aed; border:1px solid rgba(139,92,246,0.20); animation-delay:0.60s; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(10px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+</style>
+
+<div class="done-header" id="done-root">
+  <div class="done-icon-wrap">✅</div>
+  <div class="done-text">
+    <div class="done-title">Hasil Analisis Rekaman CCTV</div>
+    <div class="done-sub">Analisis video selesai dilakukan</div>
+    <div class="done-badges">
+      <span class="done-badge db-green">✔ Deteksi Selesai</span>
+      <span class="done-badge db-blue">📊 Persentase Terhitung</span>
+      <span class="done-badge db-purple">🤖 Hasil Summary AI Tersedia</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var root = document.getElementById('done-root');
+  function applyTheme() {
+    var html = window.parent.document.documentElement;
+    var body = window.parent.document.body;
+    var dark = html.getAttribute('data-theme') === 'dark' ||
+               body.classList.contains('dark') ||
+               window.matchMedia('(prefers-color-scheme: dark)').matches;
+    root.classList.toggle('dark-mode-done', dark);
+  }
+  applyTheme();
+  new MutationObserver(applyTheme).observe(window.parent.document.documentElement,
+    { attributes:true, attributeFilter:['data-theme','class'] });
+  new MutationObserver(applyTheme).observe(window.parent.document.body,
+    { attributes:true, attributeFilter:['class','data-theme'] });
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+})();
+</script>
+""", height=140)
+
+
 def run_analysis(model, video_bytes: bytes) -> dict:
     """
     Jalankan analisis video frame-by-frame.
     Mengembalikan dict berisi semua hasil analisis.
     """
+    # ── Tampilkan header animasi "sedang memproses" ──
+    processing_placeholder = st.empty()
+    finished_placeholder = st.empty()
+    with processing_placeholder:
+        _processing_header()
+
     with open("temp_video.mp4", "wb") as f:
         f.write(video_bytes)
 
@@ -105,7 +463,6 @@ def run_analysis(model, video_bytes: bytes) -> dict:
         inattentive_history.append(inattentive_count)
         timeline.append(frame_no / fps)
 
-        import numpy as _np
         img_rgb = _cv2.cvtColor(img, _cv2.COLOR_BGR2RGB)
         video_placeholder.image(img_rgb, channels="RGB", width="stretch")
 
@@ -125,6 +482,10 @@ def run_analysis(model, video_bytes: bytes) -> dict:
         time.sleep(0.03)
 
     cap.release()
+
+    # ── Ganti header menjadi "Berhasil Dianalisis" ──
+    processing_placeholder.empty()
+    _finished_header(finished_placeholder)
 
     # Hitung ringkasan
     total_att     = sum(attentive_history)
@@ -160,12 +521,11 @@ def run_analysis(model, video_bytes: bytes) -> dict:
 
 def render_static(anim, close_anim, trigger_scroll):
     """
-    Tampilkan frame terakhir + tombol replay
-    (dipanggil saat video sudah selesai dan tidak sedang replay).
+    Tampilkan header selesai + frame terakhir + tombol replay.
+    Dipanggil saat video sudah selesai dan tidak sedang replay.
     """
-    anim("reveal-anim", "0ms")
-    st.subheader("📹 Memproses Analisis Video...")
-    close_anim()
+    # ── Header "Hasil Analisis" ──
+    _done_header()
 
     col1, col2 = st.columns([3, 2])
 
@@ -173,16 +533,6 @@ def render_static(anim, close_anim, trigger_scroll):
         anim("reveal-left-anim", "0ms")
         if st.session_state.last_frame_rgb is not None:
             st.image(st.session_state.last_frame_rgb, use_column_width=True)
-            st.markdown("""
-            <div style="display:flex;align-items:center;justify-content:center;
-                        gap:10px;margin-top:10px;padding:12px 0 4px 0;
-                        border-top:1px solid rgba(128,128,128,0.2);">
-                <span style="font-size:22px;">⏹️</span>
-                <span style="font-size:14px;color:gray;font-style:italic;">
-                    Video selesai dianalisis
-                </span>
-            </div>
-            """, unsafe_allow_html=True)
         else:
             st.info("Tidak ada frame video yang tersedia.")
 
