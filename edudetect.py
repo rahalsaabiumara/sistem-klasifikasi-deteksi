@@ -10,6 +10,70 @@ from sections import hero, tentang, fitur, upload, hasil, summary
 # ================= CONFIG =================
 st.set_page_config(page_title="EduDetect", layout="wide")
 
+# ================= INJECT CSS ANIMASI SWIPE RIGHT SIDEBAR =================
+st.markdown("""
+<style>
+/* Target kontainer utama tombol di sidebar */
+[data-testid="stSidebar"] div[data-testid="stButton"] > button {
+    display: block !important;
+    width: 100% !important;
+    height: 50px !important;
+    background-color: transparent !important;
+    border: 2px solid #808080 !important;
+    border-radius: 5px !important; /* Sedikit lengkungan agar tidak terlalu kaku */
+    position: relative !important;
+    transition: all .35s !important;
+    overflow: hidden !important; /* Mencegah background swipe keluar batas */
+    margin-bottom: 15px !important;
+    padding: 0 !important;
+}
+
+/* Target teks di dalam tombol */
+[data-testid="stSidebar"] div[data-testid="stButton"] > button p {
+    position: relative !important;
+    z-index: 2 !important;
+    font-family: sans-serif !important;
+    font-size: 18px !important;
+    letter-spacing: 2px !important;
+    color: #808080 !important;
+    margin: 0 !important;
+    line-height: 46px !important; /* Menyesuaikan tinggi tombol dikurangi border */
+    font-weight: bold !important;
+    transition: all .35s !important;
+}
+
+/* Elemen animasi swipe (Background merah yang tersembunyi) */
+[data-testid="stSidebar"] div[data-testid="stButton"] > button::after {
+    position: absolute !important;
+    content: "" !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 0 !important;
+    height: 100% !important;
+    background: #0A2DD1 !important;
+    transition: all .35s !important;
+    z-index: 1 !important;
+}
+
+/* Efek saat kursor diarahkan ke tombol (Hover) - Background melebar */
+[data-testid="stSidebar"] div[data-testid="stButton"] > button:hover::after {
+    width: 100% !important;
+}
+
+/* Efek saat kursor diarahkan ke tombol (Hover) - Teks berubah putih */
+[data-testid="stSidebar"] div[data-testid="stButton"] > button:hover p {
+    color: #fff !important;
+}
+
+/* Menghilangkan border biru bawaan Streamlit saat diklik */
+[data-testid="stSidebar"] div[data-testid="stButton"] > button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    color: #fff !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # ================= INJECT CSS ANIMASI KE PARENT FRAME =================
 st.components.v1.html("""
 <script>
