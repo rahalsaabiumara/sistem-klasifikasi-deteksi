@@ -44,7 +44,7 @@ def _stat_cards(final_percent: int, att_range: str, inatt_range: str):
     pct_color = "#10b981" if final_percent >= 50 else "#ef4444"
     pct_label = "Baik ✓" if final_percent >= 50 else "Perlu Perhatian ⚠"
 
-    st.components.v1.html(f"""
+    st.html(f"""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
   * {{ box-sizing:border-box; margin:0; padding:0; }}
@@ -163,7 +163,7 @@ def _summary_header(opening_text: str):
                 else "linear-gradient(135deg,#f59e0b,#ef4444)"
     icon_em   = "🎯" if is_good else "⚠️"
 
-    st.components.v1.html(f"""
+    st.html(f"""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
   * {{ box-sizing:border-box; margin:0; padding:0; }}
@@ -250,7 +250,7 @@ def _summary_header(opening_text: str):
 
 def _ai_result_card(summary_text: str):
     """Card header khusus sebelum konten AI."""
-    st.components.v1.html("""
+    st.html("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
   * { box-sizing:border-box; margin:0; padding:0; }
@@ -386,7 +386,7 @@ def render(anim, close_anim, anchor, trigger_scroll_fn):
     close_anim()
 
     # ── Re-trigger scroll observer ──
-    st.components.v1.html("""
+    st.html("""
     <script>
     setTimeout(function() {
         var parentDoc = window.parent.document;
