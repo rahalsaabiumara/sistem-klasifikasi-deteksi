@@ -5,7 +5,7 @@ def render(anim, close_anim, anchor):
     """Render section Tentang EduDetect — dengan dark mode support."""
     anchor("section-tentang")
 
-    st..html("""
+    st.html("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
