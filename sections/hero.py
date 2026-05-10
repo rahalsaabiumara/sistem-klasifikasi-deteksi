@@ -3,7 +3,7 @@ import streamlit as st
 
 def render():
     """Render hero section — landing page utama."""
-    st.components.v1.html("""
+    st.html("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
 
