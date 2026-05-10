@@ -5,7 +5,7 @@ def render(anim, close_anim, anchor):
     """Render section Fitur — dengan dark mode support."""
     anchor("section-fitur")
 
-    st.html("""
+    st.components.v1.html("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
