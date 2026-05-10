@@ -108,7 +108,7 @@ def _video_html_placeholder(img_b64: str) -> str:
 
 def _processing_header():
     """Header animasi saat video sedang diproses."""
-    st.components.v1.html("""
+    st.html("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -173,7 +173,7 @@ def _processing_header():
 
 def _done_header():
     """Header setelah video selesai dianalisis."""
-    st.components.v1.html("""
+    st.html("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
   * { box-sizing:border-box; margin:0; padding:0; }
