@@ -289,15 +289,6 @@ if st.session_state.scroll_target:
     st.session_state.scroll_target = None
 
 # ================= LOAD MODEL =================
-import torch
-
-try:
-    ckpt = torch.load("my_model/my_model.pt", map_location="cpu")
-    print("MODEL BERHASIL DIBACA")
-    print(type(ckpt))
-except Exception as e:
-    print("ERROR ASLI:")
-    print(e)
 model = YOLO("my_model/my_model.pt")
 
 # ===================================================================
