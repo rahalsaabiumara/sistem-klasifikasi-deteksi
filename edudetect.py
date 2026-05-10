@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import os
 import google.generativeai as genai
 
-# Import semua section
 from sections import hero, tentang, fitur, upload, hasil, summary
 
 # ================= CONFIG =================
@@ -75,7 +74,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ================= INJECT CSS ANIMASI KE PARENT FRAME =================
-st.html("""
+st.components.v1.html("""
 <script>
 (function() {
     var parentDoc = window.parent.document;
@@ -156,7 +155,7 @@ st.html("""
     setTimeout(initObserver, 900);
 })();
 </script>
-""")
+""", height=0)
 
 # ================= SESSION STATE =================
 defaults = {
@@ -199,7 +198,7 @@ def close_anim():
     st.markdown('</div>', unsafe_allow_html=True)
 
 def trigger_scroll(target_id: str):
-    st.html(f"""
+    st.components.v1.html(f"""
         <script>
         (function() {{
             var attempts = 0;
@@ -216,7 +215,7 @@ def trigger_scroll(target_id: str):
             tryScroll();
         }})();
         </script>
-    """)
+    """, height=0)
 
 # ================= SIDEBAR NAVBAR =================
 with st.sidebar:
